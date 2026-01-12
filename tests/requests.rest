@@ -1,0 +1,134 @@
+@baseUrl = http://localhost:3000/api
+@postId =
+@commentId =
+@senderId = user123
+
+### ========== POSTS API ==========
+
+### 1. Create a new post
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post with at least 10 characters",
+  "sender": "{{senderId}}"
+}
+
+###
+
+### 2. Get all posts
+GET {{baseUrl}}/posts
+
+###
+
+### 3. Get posts by sender
+GET {{baseUrl}}/posts?sender={{senderId}}
+
+###
+
+### 4. Get post by ID (replace postId variable with actual ID from step 1)
+GET {{baseUrl}}/posts/{{postId}}
+
+###
+
+### 5. Update a post (replace postId variable with actual ID)
+PUT {{baseUrl}}/posts/{{postId}}
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "content": "Updated content with sufficient length for validation"
+}
+
+###
+
+### ========== COMMENTS API ==========
+
+### 1. Create a new comment (replace postId variable with actual ID)
+POST {{baseUrl}}/comments
+Content-Type: application/json
+
+{
+  "postId": "{{postId}}",
+  "content": "Great post!",
+  "author": "commenter123"
+}
+
+###
+
+### 2. Get all comments
+GET {{baseUrl}}/comments
+
+###
+
+### 3. Get comments by post ID (replace postId variable with actual ID)
+GET {{baseUrl}}/comments?postId={{postId}}
+
+###
+
+### 4. Get comment by ID (replace commentId variable with actual ID from step 1)
+GET {{baseUrl}}/comments/{{commentId}}
+
+###
+
+### 5. Update a comment (replace commentId variable with actual ID)
+PUT {{baseUrl}}/comments/{{commentId}}
+Content-Type: application/json
+
+{
+  "content": "Updated comment text"
+}
+
+###
+
+### 6. Delete a comment (replace commentId variable with actual ID)
+DELETE {{baseUrl}}/comments/{{commentId}}
+
+###
+
+### ========== ERROR CASES ==========
+
+### Get non-existent post
+GET {{baseUrl}}/posts/507f1f77bcf86cd799439011
+
+###
+
+### Create post with missing fields (should return 400)
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "title": "No content field"
+}
+
+###
+
+### Create post with too short title (should return 400)
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "title": "Hi",
+  "content": "This is valid content with enough characters",
+  "sender": "user123"
+}
+
+###
+
+### Create post with too short content (should return 400)
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "title": "Valid Title",
+  "content": "Short",
+  "sender": "user123"
+}
+
+###
+
+### Get comment with invalid ID format
+GET {{baseUrl}}/comments/invalid-id
+
+###
